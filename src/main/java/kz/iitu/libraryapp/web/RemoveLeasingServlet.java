@@ -1,4 +1,4 @@
-package kz.iitu.libraryapp;
+package kz.iitu.libraryapp.web;
 
 import kz.iitu.libraryapp.core.LibraryService;
 import kz.iitu.libraryapp.core.jwt.AuthService;

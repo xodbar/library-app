@@ -3,9 +3,9 @@ package kz.iitu.libraryapp.core.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import kz.iitu.libraryapp.core.exception.auth.AuthenticationException;
 import kz.iitu.libraryapp.core.user.User;
 import kz.iitu.libraryapp.core.user.UserDAO;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -27,13 +27,11 @@ public class AuthService {
     private final UserDAO userDAO;
     private final String secret;
     private final int expirationMinutes;
-    private final ObjectMapper objectMapper;
 
     private AuthService() {
         userDAO = UserDAO.getInstance();
         expirationMinutes = 30;
         secret = "c2FsYW1BbGVpa3VtNzc3JElzSGVyZUFuZEdvbm5hRnVja0VtQWxsJSUl";
-        objectMapper = new ObjectMapper();
     }
 
     public static AuthService getInstance() {
@@ -43,9 +41,9 @@ public class AuthService {
         return INSTANCE;
     }
 
-    public String issueToken(String username, String password) throws Exception {
+    public String issueToken(String username, String password) throws AuthenticationException {
         if (!isCredentialCorrect(username, password))
-            throw new Exception("Incorrect credentials");
+            throw new AuthenticationException("Incorrect credentials");
 
         Claims claims = Jwts.claims().setSubject(username);
 

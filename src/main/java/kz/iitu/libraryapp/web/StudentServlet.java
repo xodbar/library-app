@@ -1,4 +1,4 @@
-package kz.iitu.libraryapp;
+package kz.iitu.libraryapp.web;
 
 import kz.iitu.libraryapp.core.LibraryService;
 import kz.iitu.libraryapp.core.jwt.AuthService;
@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name = "leasingServlet", value = "/leasing")
-public class LeasingServlet extends HttpServlet {
+@WebServlet(name = "studentServlet", value = "/students")
+public class StudentServlet extends HttpServlet {
 
     private LibraryService libraryService;
     private AuthService authService;
@@ -27,9 +27,7 @@ public class LeasingServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         authService.ensureHasAccess(req, resp);
-        RequestDispatcher dispatcher = req.getRequestDispatcher("leasing.jsp");
-        req.setAttribute("leasingList", libraryService.getAllLeasingDTO());
-        req.setAttribute("availableBooks", libraryService.getAllAvailableBooks());
+        RequestDispatcher dispatcher = req.getRequestDispatcher("students.jsp");
         req.setAttribute("students", libraryService.getAllStudents());
         dispatcher.forward(req, resp);
     }
@@ -37,10 +35,11 @@ public class LeasingServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         authService.ensureHasAccess(req, resp);
-        Long studentId = Long.valueOf(req.getParameter("studentId"));
-        Long bookId = Long.valueOf(req.getParameter("bookId"));
+        String name = req.getParameter("name");
+        String surname = req.getParameter("surname");
+        String group = req.getParameter("group");
 
-        libraryService.assignBook(studentId, bookId);
-        resp.sendRedirect("/leasing");
+        libraryService.addNewStudent(name, surname, group);
+        resp.sendRedirect("/students");
     }
 }

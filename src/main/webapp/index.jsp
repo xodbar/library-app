@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Lab 2 - Library</title>
+    <title>Library App</title>
 </head>
 <body>
-<h1><%= "Hello World!" %>
-</h1>
+<h1><%= "Hello World!" %></h1>
+<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium aliquam, delectus distinctio dolor dolorum explicabo, harum itaque magni molestias recusandae rem veniam vero voluptatibus. Ab doloribus quaerat quis repudiandae veniam.</p>
 <br/>
 <ul style="margin-left: auto; margin-right: auto">
     <li><a href="books">All Books</a></li>

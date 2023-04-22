@@ -1,0 +1,26 @@
+[33mcommit cd2dd1be43048b947067ce22859ee55f1e6809b4[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31mlibrary-app/master[m[33m)[m
+Merge: 818d223 a3096eb
+Author: Zhandos <90954877+xodbar@users.noreply.github.com>
+Date:   Sat Apr 1 15:52:31 2023 +0600
+
+    Merge pull request #1 from xodbar/jpa-master
+    
+    added database connection and users table
+
+[33mcommit a3096eb0a42766229548debb4d792ebb7a94fed0[m[33m ([m[1;31mlibrary-app/jpa-master[m[33m, [m[1;32mjpa-master[m[33m)[m
+Author: xodbar <zesengaziev@outlook.com>
+Date:   Sat Apr 1 15:50:56 2023 +0600
+
+    added database connection and users table
+
+[33mcommit 818d2237a81264431143558bd803ee5dc757195e[m
+Author: Zhandos <90954877+xodbar@users.noreply.github.com>
+Date:   Sat Apr 1 14:22:14 2023 +0600
+
+    Create README.md
+
+[33mcommit 463d5e86190777bb418cc05677b318b5bfa6d3cd[m[33m ([m[1;32mdevelop[m[33m)[m
+Author: xodbar <zesengaziev@outlook.com>
+Date:   Sat Apr 1 14:12:29 2023 +0600
+
+    initial

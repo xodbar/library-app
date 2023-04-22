@@ -1,5 +1,7 @@
 package kz.iitu.libraryapp.core.bookLeasing;
 
+import kz.iitu.libraryapp.core.exception.leasing.LeasingException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -26,7 +28,7 @@ public class BookLeasingDAO {
 
     public void addLeasing(BookLeasing leasing) throws Exception {
         if (getByStudentIdAndBookId(leasing.getStudentId(), leasing.getBookId()) != null)
-            throw new Exception("Already taken");
+            throw new LeasingException("Already taken");
 
         id += 1;
         leasing.setId(id);

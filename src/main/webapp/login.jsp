@@ -26,7 +26,7 @@
             <a href="/register">Don't have account? Register</a>
         </div>
         <div>
-            <h3 style="color: red"><%=request.getAttribute("errorMessage")%></h3>
+            <h3 style="color: red"><%=(request.getAttribute("errorMessage") != null && !request.getAttribute("errorMessage").equals("No value present")) ? request.getAttribute("errorMessage") : ""%></h3>
         </div>
     </form>
 </div>

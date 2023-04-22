@@ -1,5 +1,7 @@
 package kz.iitu.libraryapp.core.user;
 
+import kz.iitu.libraryapp.core.exception.auth.RegisterException;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -32,17 +34,17 @@ public class UserDAO {
         return INSTANCE;
     }
 
-    public void addUser(User user) throws Exception {
+    public void addUser(User user) throws RegisterException {
         if (getByUsername(user.getUsername()) != null)
-            throw new Exception("User already exists!");
+            throw new RegisterException("User already exists!");
 
         if (user.getPassword() == null || user.getPassword().isEmpty())
-            throw new Exception("Password is empty");
+            throw new RegisterException("Password is empty");
 
         int result = insert(user.getUsername(), user.getPassword());
 
         if (result == 0)
-            throw new Exception("Failed to create user");
+            throw new RegisterException("Failed to create user");
     }
 
     public User getUserByUsername(String username) {

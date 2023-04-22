@@ -1,5 +1,6 @@
-package kz.iitu.libraryapp;
+package kz.iitu.libraryapp.web;
 
+import kz.iitu.libraryapp.core.exception.auth.RegisterException;
 import kz.iitu.libraryapp.core.user.User;
 import kz.iitu.libraryapp.core.user.UserDAO;
 
@@ -38,9 +39,9 @@ public class RegisterServlet extends HttpServlet {
             req.removeAttribute("errorMessage");
 
             resp.sendRedirect("/login");
-        } catch (Exception e) {
+        } catch (RegisterException e) {
             RequestDispatcher dispatcher = req.getRequestDispatcher("register.jsp");
-            req.setAttribute("errorMessage", e.getMessage());
+            req.setAttribute("errorMessage", e.getErrorMessage());
             dispatcher.forward(req, resp);
         }
     }

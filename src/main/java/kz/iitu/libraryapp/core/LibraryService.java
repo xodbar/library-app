@@ -4,6 +4,8 @@ import kz.iitu.libraryapp.core.book.Book;
 import kz.iitu.libraryapp.core.book.BookDAO;
 import kz.iitu.libraryapp.core.bookLeasing.BookLeasing;
 import kz.iitu.libraryapp.core.bookLeasing.BookLeasingDAO;
+import kz.iitu.libraryapp.core.exception.leasing.BookOutOfStockException;
+import kz.iitu.libraryapp.core.exception.leasing.LeasingException;
 import kz.iitu.libraryapp.core.student.Student;
 import kz.iitu.libraryapp.core.student.StudentDAO;
 
@@ -55,16 +57,16 @@ public class LibraryService {
         }
     }
 
-    public void assignBook(Long studentId, Long bookId) {
+    public void assignBook(Long studentId, Long bookId) throws LeasingException {
         try {
             Student student = studentDAO.getById(studentId);
             Book book = bookDAO.getById(bookId);
 
             if (student == null || book == null)
-                throw new Exception("Book or student does not exist");
+                throw new LeasingException("Book or student does not exist");
 
             if (book.isNotAvailable())
-                throw new Exception("Book is out of stock");
+                throw new BookOutOfStockException("Book is out of stock");
 
             bookLeasingDAO.addLeasing(new BookLeasing(
                     null,
@@ -81,32 +83,12 @@ public class LibraryService {
         }
     }
 
-    public void returnBook(Long studentId, Long bookId) {
-        try {
-            Student student = studentDAO.getById(studentId);
-            Book book = bookDAO.getById(bookId);
-            BookLeasing leasing = bookLeasingDAO.getByStudentIdAndBookId(studentId, bookId);
-
-            if (student == null || book == null || leasing == null)
-                throw new Exception("Book or student does not exist, or student didn't take this book");
-
-            bookLeasingDAO.removeLeasing(leasing.getId());
-
-            book.setQuantity(book.getQuantity() + 1);
-            bookDAO.updateBook(book);
-
-            logger.log(Level.INFO, "Returned book: " + book + " from " + student);
-        } catch (Exception e) {
-            logger.log(Level.WARNING, "Failed to assign book to student, details: " + e.getMessage(), e);
-        }
-    }
-
     public void returnBook(Long leasingId) {
         try {
             BookLeasing leasing = bookLeasingDAO.getById(leasingId);
 
             if (leasing == null)
-                throw new Exception("Leasing does not exist");
+                throw new LeasingException("Leasing does not exist");
 
             Book book = bookDAO.getById(leasing.getBookId());
             bookLeasingDAO.removeLeasing(leasing.getId());

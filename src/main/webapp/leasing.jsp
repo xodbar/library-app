@@ -34,6 +34,9 @@
         <button type="submit" style="width: 100px">Submit</button>
     </form>
 </div>
+<div>
+    <h3 style="color: red"><%=request.getAttribute("errorMessage") != null ? request.getAttribute("errorMessage") : ""%></h3>
+</div>
 <table border ="1" style="width: 80%" align="center">
     <tr bgcolor="00FF7F">
         <th><b>Leasing ID</b></th>

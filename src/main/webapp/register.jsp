@@ -26,7 +26,7 @@
             <a href="/login">Already have account? Log In</a>
         </div>
         <div>
-            <h3 style="color: red"><%=request.getAttribute("errorMessage")%></h3>
+            <h3 style="color: red"><%=request.getAttribute("errorMessage") != null ? request.getAttribute("errorMessage") : ""%></h3>
         </div>
     </form>
 </div>

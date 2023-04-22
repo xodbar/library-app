@@ -1,5 +1,6 @@
-package kz.iitu.libraryapp;
+package kz.iitu.libraryapp.web;
 
+import kz.iitu.libraryapp.core.exception.auth.AuthenticationException;
 import kz.iitu.libraryapp.core.jwt.AuthService;
 
 import javax.servlet.RequestDispatcher;
@@ -43,10 +44,10 @@ public class AuthServlet extends HttpServlet {
 
             resp.addCookie(authCookie);
             resp.sendRedirect("/books");
-        } catch (Exception e) {
+        } catch (AuthenticationException e) {
             e.printStackTrace();
             RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
-            req.setAttribute("errorMessage", e.getMessage());
+            req.setAttribute("errorMessage", e.getErrorMessage());
             dispatcher.forward(req, resp);
         }
     }

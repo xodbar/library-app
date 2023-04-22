@@ -1,4 +1,4 @@
-package kz.iitu.libraryapp;
+package kz.iitu.libraryapp.web;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
