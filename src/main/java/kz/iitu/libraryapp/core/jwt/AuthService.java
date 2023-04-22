@@ -5,7 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import kz.iitu.libraryapp.core.exception.auth.AuthenticationException;
 import kz.iitu.libraryapp.core.user.User;
-import kz.iitu.libraryapp.core.user.UserDAO;
+import kz.iitu.libraryapp.core.user.UserRepository;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,12 +24,12 @@ public class AuthService {
 
     private static AuthService INSTANCE;
 
-    private final UserDAO userDAO;
+    private final UserRepository userRepository;
     private final String secret;
     private final int expirationMinutes;
 
     private AuthService() {
-        userDAO = UserDAO.getInstance();
+        userRepository = UserRepository.getInstance();
         expirationMinutes = 30;
         secret = "c2FsYW1BbGVpa3VtNzc3JElzSGVyZUFuZEdvbm5hRnVja0VtQWxsJSUl";
     }
@@ -72,7 +72,7 @@ public class AuthService {
 
             String username = getUsername(cookie.getValue());
 
-            if (userDAO.getByUsername(username) == null)
+            if (userRepository.getByUsername(username) == null)
                 throw new IOException("User does not exists");
         } catch (Exception e) {
             RequestDispatcher dispatcher = req.getRequestDispatcher("login.jsp");
@@ -82,7 +82,7 @@ public class AuthService {
     }
 
     private boolean isCredentialCorrect(String username, String password) {
-        User user = userDAO.getByUsername(username);
+        User user = userRepository.getByUsername(username);
 
         if (user == null)
             return false;

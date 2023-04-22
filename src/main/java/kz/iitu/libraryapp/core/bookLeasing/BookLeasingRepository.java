@@ -7,21 +7,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class BookLeasingDAO {
+public class BookLeasingRepository {
 
-    private static BookLeasingDAO INSTANCE;
+    private static BookLeasingRepository INSTANCE;
 
     private final List<BookLeasing> leasingList;
     private Long id;
 
-    private BookLeasingDAO() {
+    private BookLeasingRepository() {
         leasingList = new ArrayList<>();
         id = 0L;
     }
 
-    public static BookLeasingDAO getInstance() {
+    public static BookLeasingRepository getInstance() {
         if (INSTANCE == null)
-            INSTANCE = new BookLeasingDAO();
+            INSTANCE = new BookLeasingRepository();
 
         return INSTANCE;
     }

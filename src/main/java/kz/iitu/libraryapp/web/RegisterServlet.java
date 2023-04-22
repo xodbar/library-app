@@ -2,7 +2,7 @@ package kz.iitu.libraryapp.web;
 
 import kz.iitu.libraryapp.core.exception.auth.RegisterException;
 import kz.iitu.libraryapp.core.user.User;
-import kz.iitu.libraryapp.core.user.UserDAO;
+import kz.iitu.libraryapp.core.user.UserRepository;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,11 +15,11 @@ import java.io.IOException;
 @WebServlet(name = "registerServlet", value = "/register")
 public class RegisterServlet extends HttpServlet {
 
-    private UserDAO userDAO;
+    private UserRepository userRepository;
 
     @Override
     public void init() throws ServletException {
-        userDAO = UserDAO.getInstance();
+        userRepository = UserRepository.getInstance();
         super.init();
     }
 
@@ -35,7 +35,7 @@ public class RegisterServlet extends HttpServlet {
             String username = req.getParameter("username");
             String password = req.getParameter("password");
 
-            userDAO.addUser(new User(null, username, password));
+            userRepository.addUser(new User(null, username, password));
             req.removeAttribute("errorMessage");
 
             resp.sendRedirect("/login");

@@ -3,11 +3,11 @@ package kz.iitu.libraryapp.core;
 import kz.iitu.libraryapp.core.book.Book;
 import kz.iitu.libraryapp.core.book.BookDAO;
 import kz.iitu.libraryapp.core.bookLeasing.BookLeasing;
-import kz.iitu.libraryapp.core.bookLeasing.BookLeasingDAO;
+import kz.iitu.libraryapp.core.bookLeasing.BookLeasingRepository;
 import kz.iitu.libraryapp.core.exception.leasing.BookOutOfStockException;
 import kz.iitu.libraryapp.core.exception.leasing.LeasingException;
 import kz.iitu.libraryapp.core.student.Student;
-import kz.iitu.libraryapp.core.student.StudentDAO;
+import kz.iitu.libraryapp.core.student.StudentRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +21,13 @@ public class LibraryService {
     private final Logger logger = Logger.getLogger(LibraryService.class.getName());
 
     private final BookDAO bookDAO;
-    private final StudentDAO studentDAO;
-    private final BookLeasingDAO bookLeasingDAO;
+    private final StudentRepository studentRepository;
+    private final BookLeasingRepository bookLeasingRepository;
 
     private LibraryService() {
         bookDAO = BookDAO.getInstance();
-        studentDAO = StudentDAO.getInstance();
-        bookLeasingDAO = BookLeasingDAO.getInstance();
+        studentRepository = StudentRepository.getInstance();
+        bookLeasingRepository = BookLeasingRepository.getInstance();
     }
 
     public static LibraryService getInstance() {
@@ -50,7 +50,7 @@ public class LibraryService {
     public void addNewStudent(String name, String surname, String group) {
         try {
             Student student = new Student(null, name, surname, group);
-            studentDAO.addStudent(student);
+            studentRepository.addStudent(student);
             logger.log(Level.INFO, "Added new student: " + student);
         } catch (Exception e) {
             logger.log(Level.WARNING, "Failed to add student, details: " + e.getMessage(), e);
@@ -59,7 +59,7 @@ public class LibraryService {
 
     public void assignBook(Long studentId, Long bookId) throws LeasingException {
         try {
-            Student student = studentDAO.getById(studentId);
+            Student student = studentRepository.getById(studentId);
             Book book = bookDAO.getById(bookId);
 
             if (student == null || book == null)
@@ -68,7 +68,7 @@ public class LibraryService {
             if (book.isNotAvailable())
                 throw new BookOutOfStockException("Book is out of stock");
 
-            bookLeasingDAO.addLeasing(new BookLeasing(
+            bookLeasingRepository.addLeasing(new BookLeasing(
                     null,
                     book.getId(),
                     student.getId()
@@ -85,13 +85,13 @@ public class LibraryService {
 
     public void returnBook(Long leasingId) {
         try {
-            BookLeasing leasing = bookLeasingDAO.getById(leasingId);
+            BookLeasing leasing = bookLeasingRepository.getById(leasingId);
 
             if (leasing == null)
                 throw new LeasingException("Leasing does not exist");
 
             Book book = bookDAO.getById(leasing.getBookId());
-            bookLeasingDAO.removeLeasing(leasing.getId());
+            bookLeasingRepository.removeLeasing(leasing.getId());
 
             book.setQuantity(book.getQuantity() + 1);
             bookDAO.updateBook(book);
@@ -105,7 +105,7 @@ public class LibraryService {
     public List<Book> getAllTakenBooks(Long studentId) {
         List<Book> result = new ArrayList<>();
 
-        bookLeasingDAO.getAllByStudentId(studentId)
+        bookLeasingRepository.getAllByStudentId(studentId)
                 .forEach(leasing -> result.add(bookDAO.getById(leasing.getBookId())));
 
         return result;
@@ -116,12 +116,12 @@ public class LibraryService {
     }
 
     public List<BookLeasingDTO> getAllLeasingDTO() {
-        List<BookLeasing> leasingList = bookLeasingDAO.getAll();
+        List<BookLeasing> leasingList = bookLeasingRepository.getAll();
         List<BookLeasingDTO> leasingDTOs = new ArrayList<>();
 
         leasingList.forEach(leasing -> {
             Book book = bookDAO.getById(leasing.getBookId());
-            Student student = studentDAO.getById(leasing.getStudentId());
+            Student student = studentRepository.getById(leasing.getStudentId());
             leasingDTOs.add(new BookLeasingDTO(
                     leasing.getId(),
                     book.toString(),
@@ -141,7 +141,7 @@ public class LibraryService {
     }
 
     public List<Student> getAllStudents() {
-        return studentDAO.getAll();
+        return studentRepository.getAll();
     }
 
     public List<Book> getAllBooks() {
@@ -149,6 +149,6 @@ public class LibraryService {
     }
 
     public List<BookLeasing> getAllLeasing() {
-        return bookLeasingDAO.getAll();
+        return bookLeasingRepository.getAll();
     }
 }

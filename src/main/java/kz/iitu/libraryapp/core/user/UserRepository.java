@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class UserDAO {
+public class UserRepository {
 
-    private static UserDAO INSTANCE;
+    private static UserRepository INSTANCE;
     private static final String url = "jdbc:postgresql://localhost:5432/iitu?currentSchema=library_app";
     private static final String username = "postgres";
     private static final String password = "postgres";
 
-    private UserDAO() {
+    private UserRepository() {
         try {
             Class.forName("org.postgresql.Driver").getDeclaredConstructor().newInstance();
             try (Connection conn = DriverManager.getConnection(url, username, password)) {
@@ -27,9 +27,9 @@ public class UserDAO {
         }
     }
 
-    public static UserDAO getInstance() {
+    public static UserRepository getInstance() {
         if (INSTANCE == null)
-            INSTANCE = new UserDAO();
+            INSTANCE = new UserRepository();
 
         return INSTANCE;
     }

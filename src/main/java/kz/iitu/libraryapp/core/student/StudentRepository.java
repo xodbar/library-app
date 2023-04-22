@@ -5,21 +5,21 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class StudentDAO {
+public class StudentRepository {
 
-    private static StudentDAO INSTANCE;
+    private static StudentRepository INSTANCE;
 
     private final List<Student> students;
     private Long id;
 
-    private StudentDAO() {
+    private StudentRepository() {
         students = new ArrayList<>();
         id = 0L;
     }
 
-    public static StudentDAO getInstance() {
+    public static StudentRepository getInstance() {
         if (INSTANCE == null)
-            INSTANCE = new StudentDAO();
+            INSTANCE = new StudentRepository();
 
         return INSTANCE;
     }
